@@ -60,7 +60,7 @@ if [ "$NODE_RANK" -eq 0 ]; then
   --bf16 \
   --actor_learning_rate 1e-6 \
   --init_kl_coef 0.0 \
-  --prompt_data /MM-Eureka-Dataset/ \
+  --prompt_data /MM-Eureka-Dataset/new_dataset.jsonl \
   --disable_fast_tokenizer \
   --input_key message \
   --adam_offload \
