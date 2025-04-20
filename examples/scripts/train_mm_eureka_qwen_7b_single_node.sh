@@ -4,7 +4,7 @@ export RAY_MASTER_PORT=6379
 export RAY_DASHBOARD_PORT=8265
 export NCCL_TIMEOUT=7200
 
-OUTPUT_DIR='/absolute/path/to/output/dir'
+OUTPUT_DIR='/r1_exp/'
 
 export REWARD_LOG_PATH="${OUTPUT_DIR}/reward.log"
 export WORKING_DIR=$PWD
@@ -26,8 +26,9 @@ sleep 30
 
 if [ "$NODE_RANK" -eq 0 ]; then
   RAY_ADDRESS="http://127.0.0.1:$RAY_DASHBOARD_PORT" ray job submit \
+  --runtime-env-json='{"VLLM_ATTENTION_BACKEND":"triton", "excludes": [".git/"]}' \
   --working-dir $WORKING_DIR \
-  -- python3 -m openrlhf.cli.train_ppo_ray \
+  -- /env/bin/python3 -m openrlhf.cli.train_ppo_ray \
   --ref_num_nodes 1 \
   --ref_num_gpus_per_node 8 \
   --remote_rm_url examples/scripts/reward_func_qwen_instruct.py \
@@ -59,7 +60,7 @@ if [ "$NODE_RANK" -eq 0 ]; then
   --bf16 \
   --actor_learning_rate 1e-6 \
   --init_kl_coef 0.0 \
-  --prompt_data /path/to/training/data \
+  --prompt_data /MM-Eureka-Dataset/ \
   --disable_fast_tokenizer \
   --input_key message \
   --adam_offload \
